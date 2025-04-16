@@ -4,7 +4,11 @@ namespace OnlineLibrary.Controllers
 {
     public class BookManagementController : Controller
     {
-        public IActionResult Index()
+        public IActionResult BookPage()
+        {
+            return View();
+        }
+        public IActionResult BorrowPage()
         {
             return View();
         }

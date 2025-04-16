@@ -2,9 +2,123 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
 
-    <h1 class="display-4">Welcome to my first AZURE APP!!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OnlineLibrary</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+      
+        body {
+            background-image: url('/img/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+      
+        .container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .book-section {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        
+        .left-aligned-heading {
+            text-align: left;
+            margin-left: 0; 
+            padding-left: 0;
+        }
+
+        .book-card {
+            text-align: center;
+            margin: 15px;
+        }
+
+            .book-card img {
+                width: 150px;
+                height: 200px;
+                object-fit: cover;
+                margin-bottom: 10px;
+            }
+    </style>
+</head>
+<body>
+    
+   
+    <div class="container book-section">
+        <h2 class="left-aligned-heading">Popular Books</h2>
+        <div class="row">
+            <div class="col-6 col-md-2 book-card">
+                <img src="/img/book1.jpg" alt="Book 1" />
+                <p style="font-weight: bold;">Where the Crawdads Sing by Delia Owens</p>
+            </div>
+
+            <div class="col-6 col-md-2 book-card">
+                <img src="/img/book2.jpg" alt="Book 2" />
+                <p style="font-weight: bold;">The Great Gatsby by F. Scott Fitzgerald</p>
+            </div>
+
+            <div class="col-6 col-md-2 book-card">
+                <img src="/img/book3.jpg" alt="Book 3" />
+                <p style="font-weight: bold;">1984 by George Orwell</p>
+            </div>
+
+            <div class="col-6 col-md-2 book-card">
+                <img src="/img/book4.jpg" alt="Book 4" />
+                <p style="font-weight: bold;">To Kill a Mockingbird by Harper Lee</p>
+            </div>
+
+            <div class="col-6 col-md-2 book-card">
+                <img src="/img/book5.jpg" alt="Book 5" />
+                <p style="font-weight: bold;">Harry Potter and the Sorcerer's Stone by J.K. Rowling</p>
+            </div>
+        </div>
+    </div>
+
+            <div class="container book-section">
+                <h2 class="left-aligned-heading">New Books</h2>
+                <div class="row">
+                    <div class="col-6 col-md-2 book-card">
+                        <img src="/img/book6.jpeg" alt="New Book 1" />
+                        <p style="font-weight: bold;">The Invisible Life of Addie LaRue by V.E. Schwab</p>
+                    </div>
+
+                    <div class="col-6 col-md-2 book-card">
+                        <img src="/img/book7.jpeg" alt="New Book 2" />
+                        <p style="font-weight: bold;">Project Hail Mary by Andy Weir</p>
+                    </div>
+
+                    <div class="col-6 col-md-2 book-card">
+                        <img src="/img/book8.jpeg" alt="New Book 3" />
+                        <p style="font-weight: bold;">The Midnight Library by Matt Haig</p>
+                    </div>
+
+                    <div class="col-6 col-md-2 book-card">
+                        <img src="/img/book9.jpg" alt="New Book 4" />
+                        <p style="font-weight: bold;">Klara and the Sun by Kazuo Ishiguro</p>
+                    </div>
+
+                    <div class="col-6 col-md-2 book-card">
+                        <img src="/img/book10.jpg" alt="New Book 5" />
+                        <p style="font-weight: bold;">The Last House on Needless Street by Catriona Ward</p>
+                    </div>
+                </div>
+            </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
+
+</body>
+</html>
+
+
