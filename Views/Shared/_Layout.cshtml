@@ -23,8 +23,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="Index">Contact</a>
+                        </li>
+                        <li class="nav-item ms-auto">
+                            <form class="d-flex" asp-controller="Home" asp-action="Search">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query"
+                                       style="width: 400px; padding: 10px; font-size: 13px;">
+                            </form>
+                        </li>
+                        <li class="nav-item dropdown ms-auto">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
