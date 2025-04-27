@@ -1,0 +1,191 @@
+﻿.profile-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    display: flex;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+
+.profile-info {
+    flex-grow: 1;
+}
+
+    .profile-info h2 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .profile-info p {
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+.profile-tabs {
+    margin-top: 20px;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+    .nav-tabs .nav-link {
+        color: #555;
+        border: 1px solid transparent;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        padding: 10px 15px;
+        font-weight: 500;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #6a5acd;
+            background-color: #fff;
+            border-color: #ddd #ddd #fff;
+        }
+
+.tab-content {
+    padding: 20px 0;
+}
+
+.profile-form .form-group,
+.password-form .form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form label,
+.password-form label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.profile-form .form-control,
+.password-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+    .profile-form .form-control:focus,
+    .password-form .form-control:focus {
+        border-color: #6a5acd;
+        box-shadow: 0 0 0 0.2rem rgba(106, 90, 205, 0.25);
+    }
+
+.profile-form .btn-primary,
+.password-form .btn-primary,
+.notification-form .btn-primary {
+    background-color: #6a5acd;
+    border-color: #6a5acd;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+    .profile-form .btn-primary:hover,
+    .password-form .btn-primary:hover,
+    .notification-form .btn-primary:hover {
+        background-color: #5a4cbc;
+        border-color: #5a4cbc;
+    }
+
+.borrowed-books .book-item {
+    display: flex;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.borrowed-books .book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.borrowed-books .book-details h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.borrowed-books .book-details p {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.borrowed-books .btn {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.borrowing-history .table {
+    margin-top: 20px;
+}
+
+.borrowing-history .badge {
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.account-settings h4 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.account-settings hr {
+    margin: 30px 0;
+}
+
+.notification-form {
+    margin-bottom: 20px;
+}
+
+    .notification-form .form-check {
+        margin-bottom: 15px;
+    }
+
+.danger-zone {
+    background-color: #fff8f8;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #ffdddd;
+}
+
+    .danger-zone h4 {
+        color: #dc3545;
+    }
+
+    .danger-zone .btn-outline-danger {
+        margin-top: 10px;
+    }
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .borrowed-books .book-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .borrowed-books .book-cover {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}

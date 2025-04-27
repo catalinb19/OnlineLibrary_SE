@@ -1,0 +1,187 @@
+﻿.borrow-page-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.borrow-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+    .borrow-header h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .borrow-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+.borrow-content {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.book-preview {
+    flex: 0 0 300px;
+    margin-right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-cover {
+    width: 200px;
+    height: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.book-info {
+    text-align: center;
+}
+
+    .book-info h3 {
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+.book-author {
+    color: #666;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.book-details {
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+    .book-details p {
+        margin-bottom: 8px;
+    }
+
+.borrow-form-container {
+    flex: 1;
+}
+
+.borrow-form .form-group {
+    margin-bottom: 20px;
+}
+
+.borrow-form label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.borrow-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+    .borrow-form .form-control:focus {
+        border-color: #6a5acd;
+        box-shadow: 0 0 0 0.2rem rgba(106, 90, 205, 0.25);
+    }
+
+.borrow-form .form-text {
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.borrow-form .form-check {
+    margin-bottom: 25px;
+}
+
+.borrow-form .form-check-label a {
+    color: #6a5acd;
+}
+
+.borrow-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-borrow {
+    background-color: #6a5acd;
+    border-color: #6a5acd;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+    .btn-borrow:hover {
+        background-color: #5a4cbc;
+        border-color: #5a4cbc;
+    }
+
+.btn-cancel {
+    border-color: #6c757d;
+    color: #6c757d;
+    padding: 10px 20px;
+}
+
+.borrowing-guidelines {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+    .borrowing-guidelines h4 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .borrowing-guidelines ul {
+        padding-left: 20px;
+    }
+
+    .borrowing-guidelines li {
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+.modal-body h6 {
+    color: #6a5acd;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.d-none {
+    display: none;
+}
+
+@media (max-width: 992px) {
+    .borrow-content {
+        flex-direction: column;
+    }
+
+    .book-preview {
+        margin-right: 0;
+        margin-bottom: 30px;
+        flex: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .borrow-actions {
+        flex-direction: column;
+    }
+
+    .btn-borrow, .btn-cancel {
+        width: 100%;
+    }
+}

@@ -1,0 +1,240 @@
+﻿.contact-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .contact-header h2 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 32px;
+    }
+
+    .contact-header p {
+        color: #666;
+        font-size: 18px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+.contact-content {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.contact-info {
+    flex: 0 0 40%;
+    margin-right: 40px;
+}
+
+.info-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.info-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #6a5acd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+    .info-icon i {
+        font-size: 24px;
+        color: white;
+    }
+
+.info-card h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.info-card p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.social-media {
+    text-align: center;
+    margin-top: 30px;
+}
+
+    .social-media h4 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #6a5acd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+    .social-icon:hover {
+        background-color: #5a4cbc;
+        color: white;
+    }
+
+    .social-icon i {
+        font-size: 18px;
+    }
+
+.contact-form-container {
+    flex: 1;
+}
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: #333;
+}
+
+.contact-form .form-control {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+    .contact-form .form-control:focus {
+        border-color: #6a5acd;
+        box-shadow: 0 0 0 0.2rem rgba(106, 90, 205, 0.25);
+    }
+
+.contact-form .form-check {
+    margin-bottom: 20px;
+}
+
+.btn-send {
+    background-color: #6a5acd;
+    border-color: #6a5acd;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+    .btn-send:hover {
+        background-color: #5a4cbc;
+        border-color: #5a4cbc;
+    }
+
+.library-map {
+    margin-bottom: 50px;
+}
+
+    .library-map h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+.map-container {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section {
+    margin-top: 50px;
+}
+
+    .faq-section h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+.accordion-item {
+    border-color: #eee;
+    margin-bottom: 10px;
+}
+
+.accordion-button {
+    padding: 15px 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f0f0ff;
+        color: #6a5acd;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: #eee;
+    }
+
+    .accordion-button::after {
+        background-size: 16px;
+    }
+
+.accordion-body {
+    padding: 15px 20px;
+    color: #555;
+    line-height: 1.6;
+}
+
+@media (max-width: 992px) {
+    .contact-content {
+        flex-direction: column;
+    }
+
+    .contact-info {
+        margin-right: 0;
+        margin-bottom: 40px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .social-media {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-info {
+        grid-template-columns: 1fr;
+    }
+
+    .social-media {
+        grid-column: span 1;
+    }
+}
