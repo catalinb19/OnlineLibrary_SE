@@ -17,5 +17,9 @@ namespace OnlineLibrary.Controllers
         {
             return View();
         }
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
     }
 }

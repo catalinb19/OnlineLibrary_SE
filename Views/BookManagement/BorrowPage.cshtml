@@ -1,5 +1,136 @@
 ﻿@{
-    ViewData["Title"] = "BorrowPage";
+    ViewData["Title"] = "Borrow Book";
 }
 
-<p>Borrow Page</p>
+<div class="borrow-page-container">
+    <div class="borrow-header">
+        <h2>Borrow a Book</h2>
+        <p>Complete the form below to borrow "Where the Crawdads Sing" by Delia Owens</p>
+    </div>
+
+    <div class="borrow-content">
+        <div class="book-preview">
+            <img src="/img/book1.jpg" alt="Book Cover" class="book-cover" />
+            <div class="book-info">
+                <h3>Where the Crawdads Sing</h3>
+                <p class="book-author">by Delia Owens</p>
+                <div class="book-details">
+                    <p><strong>ISBN:</strong> 978-0735219090</p>
+                    <p><strong>Available Copies:</strong> 3</p>
+                    <p><strong>Location:</strong> Fiction Section, Shelf B4</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="borrow-form-container">
+            <form class="borrow-form">
+                <div class="form-group">
+                    <label for="borrowDate">Borrow Date</label>
+                    <input type="date" id="borrowDate" name="borrowDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label for="returnDate">Expected Return Date</label>
+                    <input type="date" id="returnDate" name="returnDate" class="form-control" value="@DateTime.Now.AddDays(14).ToString("yyyy-MM-dd")" readonly />
+                    <small class="form-text text-muted">Standard borrowing period is 14 days</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="borrowingMethod">Borrowing Method</label>
+                    <select id="borrowingMethod" name="borrowingMethod" class="form-control">
+                        <option value="pickup">Pickup at Library</option>
+                        <option value="delivery">Home Delivery (Additional fee applies)</option>
+                    </select>
+                </div>
+
+                <div id="deliveryAddressContainer" class="form-group d-none">
+                    <label for="deliveryAddress">Delivery Address</label>
+                    <textarea id="deliveryAddress" name="deliveryAddress" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Special Notes (Optional)</label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any special requests or notes"></textarea>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="termsAgreement" name="termsAgreement" class="form-check-input" required />
+                    <label class="form-check-label" for="termsAgreement">
+                        I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#borrowingTermsModal">borrowing terms and conditions</a>
+                    </label>
+                </div>
+
+                <div class="borrow-actions">
+                    <button type="submit" class="btn btn-primary btn-borrow">Confirm Borrowing</button>
+                    <a href="/BookManagement/BookPage" class="btn btn-outline-secondary btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="borrowing-guidelines">
+        <h4>Borrowing Guidelines</h4>
+        <ul>
+            <li>You can borrow up to 5 books at a time.</li>
+            <li>The standard borrowing period is 14 days.</li>
+            <li>You can extend the borrowing period once for an additional 7 days if no one has reserved the book.</li>
+            <li>Late returns incur a fee of $0.50 per day per book.</li>
+            <li>If a book is damaged or lost, you will be charged the replacement cost plus a processing fee.</li>
+            <li>For home delivery, a fee of $3.00 applies and delivery takes 1-2 business days.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Borrowing Terms Modal -->
+<div class="modal fade" id="borrowingTermsModal" tabindex="-1" aria-labelledby="borrowingTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="borrowingTermsModalLabel">Borrowing Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Eligibility</h6>
+                <p>To borrow books from our library, you must have a valid library card and your account must be in good standing with no outstanding fines exceeding $10.</p>
+
+                <h6>2. Borrowing Limits</h6>
+                <p>You may borrow up to 5 books at one time. Special collections may have different limits.</p>
+
+                <h6>3. Loan Period</h6>
+                <p>The standard loan period is 14 days. You may renew a book once for an additional 7 days if no one has placed a hold on it.</p>
+
+                <h6>4. Overdue Items</h6>
+                <p>Late returns incur a fee of $0.50 per day per book, up to a maximum of the replacement cost of the book.</p>
+
+                <h6>5. Damaged or Lost Items</h6>
+                <p>If a book is damaged or lost, you will be charged the replacement cost plus a processing fee of $5.00.</p>
+
+                <h6>6. Delivery Service</h6>
+                <p>Home delivery is available for a fee of $3.00 per order. Delivery typically takes 1-2 business days.</p>
+
+                <h6>7. Privacy</h6>
+                <p>Your borrowing history and personal information are kept confidential in accordance with our privacy policy.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/book-management-borrow-page.css" />
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const borrowingMethodSelect = document.getElementById('borrowingMethod');
+        const deliveryAddressContainer = document.getElementById('deliveryAddressContainer');
+
+        borrowingMethodSelect.addEventListener('change', function() {
+            if (this.value === 'delivery') {
+                deliveryAddressContainer.classList.remove('d-none');
+            } else {
+                deliveryAddressContainer.classList.add('d-none');
+            }
+        });
+    });
+</script>
