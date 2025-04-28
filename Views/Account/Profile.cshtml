@@ -2,4 +2,175 @@
     ViewData["Title"] = "Profile";
 }
 
-<p>Profile Page</p>
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-info">
+            <h2>John Doe</h2>
+            <p>Member since: January 1, 2023</p>
+            <p>Books borrowed: 5</p>
+            <p>Books currently borrowed: 2</p>
+        </div>
+    </div>
+
+    <div class="profile-tabs">
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab" aria-controls="personal" aria-selected="true">Personal Information</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="borrowed-tab" data-bs-toggle="tab" data-bs-target="#borrowed" type="button" role="tab" aria-controls="borrowed" aria-selected="false">Borrowed Books</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">Borrowing History</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Account Settings</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="profileTabsContent">
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <form class="profile-form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-control" value="John" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-control" value="Doe" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" value="john.doe@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" value="(123) 456-7890" />
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" class="form-control" rows="3">123 Library Street, Booktown, BK 12345</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="borrowed" role="tabpanel" aria-labelledby="borrowed-tab">
+                <div class="borrowed-books">
+                    <div class="book-item">
+                        <img src="/img/book1.jpg" alt="Book Cover" class="book-cover" />
+                        <div class="book-details">
+                            <h4>Where the Crawdads Sing</h4>
+                            <p>Author: Delia Owens</p>
+                            <p>Borrowed on: March 15, 2023</p>
+                            <p>Due date: April 15, 2023</p>
+                            <button class="btn btn-outline-primary btn-sm">Extend Borrowing Period</button>
+                            <button class="btn btn-outline-success btn-sm">Return Book</button>
+                        </div>
+                    </div>
+                    <div class="book-item">
+                        <img src="/img/book5.jpg" alt="Book Cover" class="book-cover" />
+                        <div class="book-details">
+                            <h4>Harry Potter and the Sorcerer's Stone</h4>
+                            <p>Author: J.K. Rowling</p>
+                            <p>Borrowed on: March 20, 2023</p>
+                            <p>Due date: April 20, 2023</p>
+                            <button class="btn btn-outline-primary btn-sm">Extend Borrowing Period</button>
+                            <button class="btn btn-outline-success btn-sm">Return Book</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                <div class="borrowing-history">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Author</th>
+                                <th>Borrowed Date</th>
+                                <th>Return Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>The Great Gatsby</td>
+                                <td>F. Scott Fitzgerald</td>
+                                <td>January 10, 2023</td>
+                                <td>February 10, 2023</td>
+                                <td><span class="badge bg-success">Returned</span></td>
+                            </tr>
+                            <tr>
+                                <td>1984</td>
+                                <td>George Orwell</td>
+                                <td>February 5, 2023</td>
+                                <td>March 5, 2023</td>
+                                <td><span class="badge bg-success">Returned</span></td>
+                            </tr>
+                            <tr>
+                                <td>To Kill a Mockingbird</td>
+                                <td>Harper Lee</td>
+                                <td>February 20, 2023</td>
+                                <td>March 20, 2023</td>
+                                <td><span class="badge bg-success">Returned</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="account-settings">
+                    <h4>Change Password</h4>
+                    <form class="password-form">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Confirm New Password</label>
+                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </form>
+
+                    <hr />
+
+                    <h4>Notification Settings</h4>
+                    <form class="notification-form">
+                        <div class="form-check">
+                            <input type="checkbox" id="emailNotifications" name="emailNotifications" class="form-check-input" checked />
+                            <label class="form-check-label" for="emailNotifications">Email notifications for due dates</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="newArrivalsNotifications" name="newArrivalsNotifications" class="form-check-input" checked />
+                            <label class="form-check-label" for="newArrivalsNotifications">Notifications about new arrivals</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="eventNotifications" name="eventNotifications" class="form-check-input" />
+                            <label class="form-check-label" for="eventNotifications">Notifications about library events</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                    </form>
+
+                    <hr />
+
+                    <div class="danger-zone">
+                        <h4>Permanent Changes</h4>
+                        <button class="btn btn-outline-danger">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/account-profile.css" />

@@ -1,5 +1,168 @@
 ﻿@{
-    ViewData["Title"] = "Categories";
+    ViewData["Title"] = "Book Categories";
 }
 
-<p>Categories Page</p>
+<div class="categories-container">
+    <div class="categories-header">
+        <h2>Book Categories</h2>
+        <p>Browse our extensive collection by category</p>
+    </div>
+
+    <div class="categories-search">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search categories..." id="categorySearch">
+            <button class="btn btn-outline-secondary" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="categories-grid">
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <h3>Fiction</h3>
+            <p>Novels, short stories, and other fictional works</p>
+            <span class="book-count">1,245 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h3>Science Fiction</h3>
+            <p>Futuristic concepts, space travel, and technology</p>
+            <span class="book-count">876 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-hat-wizard"></i>
+            </div>
+            <h3>Fantasy</h3>
+            <p>Magic, mythical creatures, and supernatural elements</p>
+            <span class="book-count">932 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-landmark"></i>
+            </div>
+            <h3>History</h3>
+            <p>Historical events, figures, and civilizations</p>
+            <span class="book-count">754 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <h3>Science</h3>
+            <p>Scientific discoveries, theories, and research</p>
+            <span class="book-count">623 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h3>Psychology</h3>
+            <p>Human behavior, mental processes, and therapy</p>
+            <span class="book-count">412 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <h3>Business</h3>
+            <p>Management, entrepreneurship, and economics</p>
+            <span class="book-count">587 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h3>Cooking</h3>
+            <p>Recipes, cooking techniques, and food culture</p>
+            <span class="book-count">345 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h3>Health & Fitness</h3>
+            <p>Wellness, exercise, and nutrition</p>
+            <span class="book-count">298 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3>Art & Photography</h3>
+            <p>Visual arts, techniques, and famous artists</p>
+            <span class="book-count">421 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h3>Music</h3>
+            <p>Musical theory, history, and biographies</p>
+            <span class="book-count">267 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+
+        <div class="category-card">
+            <div class="category-icon">
+                <i class="fas fa-child"></i>
+            </div>
+            <h3>Children's Books</h3>
+            <p>Stories and educational books for children</p>
+            <span class="book-count">892 books</span>
+            <a href="#" class="btn btn-primary">Browse</a>
+        </div>
+    </div>
+
+
+</div>
+
+<link rel="stylesheet" href="~/css/categories-index.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('categorySearch');
+        const categoryCards = document.querySelectorAll('.category-card');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+
+            categoryCards.forEach(card => {
+                const categoryName = card.querySelector('h3').textContent.toLowerCase();
+                const categoryDescription = card.querySelector('p').textContent.toLowerCase();
+
+                if (categoryName.includes(searchTerm) || categoryDescription.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

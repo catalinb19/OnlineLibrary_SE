@@ -2,4 +2,31 @@
     ViewData["Title"] = "Login";
 }
 
-<p>Login Page</p>
+<div class="login-container">
+    <div class="login-form-container">
+        <h2>Login to Your Account</h2>
+        <form asp-action="Login" method="post" class="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required />
+            </div>
+            <div class="form-check">
+                <input type="checkbox" id="rememberMe" name="rememberMe" class="form-check-input" />
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </div>
+            <div class="form-links">
+                <a asp-action="Register" class="register-link">Don't have an account? Register</a>
+                <a asp-action="ResetPassword" class="forgot-password-link">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/account-login.css" />
