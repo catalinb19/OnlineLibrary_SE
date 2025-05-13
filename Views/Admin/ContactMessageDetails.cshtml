@@ -1,0 +1,121 @@
+﻿@model OnlineLibrary.Models.ContactMessage
+
+@{
+    ViewData["Title"] = "Message Details";
+    var user = ViewBag.User as Microsoft.AspNetCore.Identity.IdentityUser;
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="ContactMessages" class="btn btn-outline-secondary">Back to Messages</a>
+        </div>
+    </div>
+
+    @if (TempData["StatusMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["StatusMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="message-details">
+        <div class="message-header">
+            <div class="message-meta">
+                <div class="meta-item">
+                    <span class="meta-label">From:</span>
+                    <span class="meta-value">@Model.Name</span>
+                    @if (user != null)
+                    {
+                        <span class="badge bg-info">Registered User</span>
+                    }
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Email:</span>
+                    <span class="meta-value">@Model.Email</span>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Phone))
+                {
+                    <div class="meta-item">
+                        <span class="meta-label">Phone:</span>
+                        <span class="meta-value">@Model.Phone</span>
+                    </div>
+                }
+                <div class="meta-item">
+                    <span class="meta-label">Subject:</span>
+                    <span class="meta-value">@Model.Subject</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date:</span>
+                    <span class="meta-value">@Model.SubmissionDate.ToString("MMMM d, yyyy HH:mm")</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Newsletter:</span>
+                    <span class="meta-value">@(Model.SubscribeToNewsletter ? "Yes" : "No")</span>
+                </div>
+            </div>
+        </div>
+
+        @if (user != null)
+        {
+            <div class="user-details">
+                <h4>User Information</h4>
+                <div class="user-info">
+                    <div class="info-item">
+                        <span class="info-label">Username:</span>
+                        <span class="info-value">@user.UserName</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(ViewBag.FirstName) || !string.IsNullOrEmpty(ViewBag.LastName))
+                    {
+                        <div class="info-item">
+                            <span class="info-label">Full Name:</span>
+                            <span class="info-value">@ViewBag.FirstName @ViewBag.LastName</span>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(ViewBag.Address))
+                    {
+                        <div class="info-item">
+                            <span class="info-label">Address:</span>
+                            <span class="info-value">@ViewBag.Address</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="message-content">
+            <h4>Message</h4>
+            <div class="message-text">
+                @Model.Message
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.AdminResponse))
+        {
+            <div class="admin-response">
+                <h4>Your Response</h4>
+                <div class="response-text">
+                    @Model.AdminResponse
+                </div>
+                <div class="response-date">
+                    Responded on: @Model.ResponseDate?.ToString("MMMM d, yyyy HH:mm")
+                </div>
+            </div>
+        }
+
+        <div class="response-form">
+            <h4>@(string.IsNullOrEmpty(Model.AdminResponse) ? "Respond to Message" : "Update Response")</h4>
+            <form asp-action="RespondToMessage" method="post">
+                <input type="hidden" name="messageId" value="@Model.ContactMessageId" />
+                <div class="form-group">
+                    <textarea name="adminResponse" class="form-control" rows="5" required>@Model.AdminResponse</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">@(string.IsNullOrEmpty(Model.AdminResponse) ? "Send Response" : "Update Response")</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css" />

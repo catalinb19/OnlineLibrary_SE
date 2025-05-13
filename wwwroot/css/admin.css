@@ -1,0 +1,286 @@
+﻿/* Admin Container */
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Admin Header */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+}
+
+    .admin-header h1 {
+        margin: 0;
+        color: #333;
+        font-size: 1.8rem;
+    }
+
+.admin-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Admin Table */
+.admin-table {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+    .admin-table thead {
+        background-color: #f8f9fa;
+    }
+
+    .admin-table th {
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 2px solid #dee2e6;
+        padding: 1rem 0.75rem;
+    }
+
+    .admin-table td {
+        padding: 1rem 0.75rem;
+        vertical-align: middle;
+    }
+
+/* Book Info in Admin Table */
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-book-cover {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Admin Notes */
+.admin-notes {
+    display: block;
+    max-width: 250px;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+}
+
+/* Modal Customization */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Unread Message Styling */
+.unread-message {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+/* Message Details Styling */
+.message-details {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.message-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.message-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 70px;
+}
+
+.meta-value {
+    color: #333;
+}
+
+/* User Details Styling */
+.user-details {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+    .user-details h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+.user-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 100px;
+}
+
+.info-value {
+    color: #333;
+}
+
+/* Message Content Styling */
+.message-content {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+    .message-content h4 {
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+.message-text {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    white-space: pre-wrap;
+    color: #333;
+}
+
+/* Admin Response Styling */
+.admin-response {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+    .admin-response h4 {
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+.response-text {
+    background-color: #e8f4f8;
+    border-radius: 8px;
+    padding: 1.5rem;
+    white-space: pre-wrap;
+    color: #333;
+}
+
+.response-date {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: right;
+}
+
+/* Response Form Styling */
+.response-form h4 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.response-form textarea {
+    margin-bottom: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .admin-book-cover {
+        width: 40px;
+        height: 56px;
+    }
+
+    .admin-notes {
+        max-width: 150px;
+    }
+
+    .message-meta {
+        grid-template-columns: 1fr;
+    }
+
+    .user-info {
+        grid-template-columns: 1fr;
+    }
+
+    .message-details {
+        padding: 1.5rem;
+    }
+}
+
+/* No Response Styling */
+.no-response {
+    margin-top: 1.5rem;
+}
+
+    .no-response .alert {
+        margin-bottom: 0;
+    }
+
+    .no-response h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #0c5460;
+    }
+
+    .no-response p:last-child {
+        margin-bottom: 0;
+    }
+
+/* Message Actions */
+.message-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .message-actions {
+        flex-direction: column;
+    }
+
+        .message-actions .btn {
+            width: 100%;
+        }
+}

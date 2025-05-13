@@ -1,0 +1,87 @@
+﻿@model IEnumerable<OnlineLibrary.Models.ContactMessage>
+
+@{
+    ViewData["Title"] = "Contact Messages";
+    var users = ViewBag.Users as Dictionary<string, Microsoft.AspNetCore.Identity.IdentityUser>;
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="BookRequests" class="btn btn-outline-primary">Book Requests</a>
+        </div>
+    </div>
+
+    @if (TempData["StatusMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["StatusMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            There are no contact messages to display.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model)
+                    {
+                        <tr class="@(!message.IsRead ? "unread-message" : "")">
+                            <td>@message.ContactMessageId</td>
+                            <td>@message.SubmissionDate.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>
+                                @message.Name
+                                @if (!string.IsNullOrEmpty(message.UserId) && users.TryGetValue(message.UserId, out var user))
+                                {
+                                    <span class="badge bg-info">Member</span>
+                                }
+                            </td>
+                            <td>@message.Email</td>
+                            <td>@message.Subject</td>
+                            <td>
+                                @if (!message.IsRead)
+                                {
+                                    <span class="badge bg-danger">Unread</span>
+                                }
+                                else if (!string.IsNullOrEmpty(message.AdminResponse))
+                                {
+                                    <span class="badge bg-success">Responded</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Read</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="ContactMessageDetails" asp-route-id="@message.ContactMessageId" class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css" />

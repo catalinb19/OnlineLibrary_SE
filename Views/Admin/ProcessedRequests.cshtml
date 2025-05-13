@@ -1,0 +1,117 @@
+﻿@model IEnumerable<OnlineLibrary.Models.BookRequest>
+
+@{
+    ViewData["Title"] = "Processed Book Requests";
+    var users = ViewBag.Users as Dictionary<string, Microsoft.AspNetCore.Identity.IdentityUser>;
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="BookRequests" class="btn btn-outline-primary">View Pending Requests</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            There are no processed requests to display.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped admin-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>User</th>
+                        <th>Book</th>
+                        <th>Request Type</th>
+                        <th>Request Date</th>
+                        <th>Processed Date</th>
+                        <th>Status</th>
+                        <th>Admin Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td>@request.BookRequestId</td>
+                            <td>
+                                @if (users.TryGetValue(request.UserId, out var user))
+                                {
+                                    @user.Email
+                                }
+                                else
+                                {
+                                    <span>Unknown User</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="book-info">
+                                    @if (!string.IsNullOrEmpty(request.Borrowing.Book.CoverImageUrl))
+                                    {
+                                        <img src="/img/@request.Borrowing.Book.CoverImageUrl" alt="@request.Borrowing.Book.Name Cover" class="admin-book-cover" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/book-placeholder.jpg" alt="@request.Borrowing.Book.Name Cover" class="admin-book-cover" />
+                                    }
+                                    <div>
+                                        <strong>@request.Borrowing.Book.Name</strong>
+                                        <div>by @request.Borrowing.Book.Author</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (request.RequestType == "Return")
+                                {
+                                    <span class="badge bg-success">Return</span>
+                                }
+                                else if (request.RequestType == "Extension")
+                                {
+                                    <span class="badge bg-primary">Extension</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@request.RequestType</span>
+                                }
+                            </td>
+                            <td>@request.RequestDate.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>@request.ProcessedDate?.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>
+                                @if (request.Status == "Approved")
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else if (request.Status == "Denied")
+                                {
+                                    <span class="badge bg-danger">Denied</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@request.Status</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(request.AdminNotes))
+                                {
+                                    <span class="admin-notes">@request.AdminNotes</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No notes</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css" />

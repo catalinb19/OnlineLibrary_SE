@@ -1,0 +1,83 @@
+﻿@model OnlineLibrary.Models.ContactMessage
+
+@{
+    ViewData["Title"] = "Message Details";
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="MyMessages" class="btn btn-outline-secondary">Back to My Messages</a>
+        </div>
+    </div>
+
+    <div class="message-details">
+        <div class="message-header">
+            <div class="message-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Subject:</span>
+                    <span class="meta-value">@Model.Subject</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date:</span>
+                    <span class="meta-value">@Model.SubmissionDate.ToString("MMMM d, yyyy HH:mm")</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Status:</span>
+                    <span class="meta-value">
+                        @if (!string.IsNullOrEmpty(Model.AdminResponse))
+                        {
+                            <span class="badge bg-success">Responded</span>
+                        }
+                        else if (Model.IsRead)
+                        {
+                            <span class="badge bg-info">Read</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Pending</span>
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="message-content">
+            <h4>Your Message</h4>
+            <div class="message-text">
+                @Model.Message
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.AdminResponse))
+        {
+            <div class="admin-response">
+                <h4>Library Staff Response</h4>
+                <div class="response-text">
+                    @Model.AdminResponse
+                </div>
+                <div class="response-date">
+                    Responded on: @Model.ResponseDate?.ToString("MMMM d, yyyy HH:mm")
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="no-response">
+                <div class="alert alert-info">
+                    <h4>Awaiting Response</h4>
+                    <p>We haven't responded to your message yet. We typically respond within 1-2 business days.</p>
+                    <p>Thank you for your patience.</p>
+                </div>
+            </div>
+        }
+
+        <div class="message-actions mt-4">
+            <a asp-action="Index" class="btn btn-primary">Send New Message</a>
+            <a asp-action="MyMessages" class="btn btn-outline-secondary">Back to My Messages</a>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css" />
