@@ -1,0 +1,100 @@
+﻿@model OnlineLibrary.Models.Borrowing
+
+@{
+    ViewData["Title"] = "Borrowing Confirmation";
+}
+
+<div class="confirmation-container">
+    <div class="confirmation-header">
+        <div class="confirmation-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Borrowing Confirmed!</h2>
+        <p>Your book has been successfully borrowed.</p>
+    </div>
+
+    <div class="confirmation-details">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="book-image">
+                    @if (!string.IsNullOrEmpty(Model.Book.CoverImageUrl))
+                    {
+                        <img src="/img/@Model.Book.CoverImageUrl" alt="@Model.Book.Name Cover" />
+                    }
+                    else
+                    {
+                        <img src="/img/book-placeholder.jpg" alt="@Model.Book.Name Cover" />
+                    }
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="confirmation-info">
+                    <h3>@Model.Book.Name</h3>
+                    <p class="book-author">by @Model.Book.Author</p>
+
+                    <div class="borrowing-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Borrowing ID:</span>
+                            <span class="detail-value">@Model.BorrowingId</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Borrow Date:</span>
+                            <span class="detail-value">@Model.BorrowDate.ToString("MMMM d, yyyy")</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Return By:</span>
+                            <span class="detail-value">@Model.ExpectedReturnDate.ToString("MMMM d, yyyy")</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Method:</span>
+                            <span class="detail-value">@(Model.BorrowingMethod == "pickup" ? "Pickup at Library" : "Home Delivery")</span>
+                        </div>
+                        @if (Model.BorrowingMethod == "delivery" && !string.IsNullOrEmpty(Model.DeliveryAddress))
+                        {
+                            <div class="detail-item">
+                                <span class="detail-label">Delivery Address:</span>
+                                <span class="detail-value">@Model.DeliveryAddress</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Notes))
+                        {
+                            <div class="detail-item">
+                                <span class="detail-label">Notes:</span>
+                                <span class="detail-value">@Model.Notes</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirmation-instructions">
+        <h4>What's Next?</h4>
+        @if (Model.BorrowingMethod == "pickup")
+        {
+            <p>Please visit our library during opening hours to pick up your book. Bring your ID or library card for verification.</p>
+            <div class="library-hours">
+                <h5>Library Hours:</h5>
+                <ul>
+                    <li><strong>Monday - Friday:</strong> 9:00 AM - 8:00 PM</li>
+                    <li><strong>Saturday:</strong> 10:00 AM - 6:00 PM</li>
+                    <li><strong>Sunday:</strong> 12:00 PM - 5:00 PM</li>
+                </ul>
+            </div>
+        }
+        else
+        {
+            <p>Your book will be delivered to the provided address within 1-2 business days. You'll receive a notification when the book is out for delivery.</p>
+        }
+        <p>Remember to return the book by <strong>@Model.ExpectedReturnDate.ToString("MMMM d, yyyy")</strong> to avoid late fees.</p>
+    </div>
+
+    <div class="confirmation-actions">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>
+        <a href="@Url.Action("BookPage", "BookManagement", new { id = Model.BookId })" class="btn btn-outline-secondary">Back to Book Page</a>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/book-management-borrowing-confirmation.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />

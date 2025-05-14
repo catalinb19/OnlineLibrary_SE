@@ -1,0 +1,49 @@
+﻿@model IEnumerable<OnlineLibrary.Models.Book>
+
+@{
+    ViewData["Title"] = "Books in " + ViewBag.Genre;
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (!Model.Any())
+    {
+            <p>No books found in this category.</p>
+    }
+    else
+    {
+            <div class="row">
+            @foreach (var book in Model)
+            {
+                        <div class="col-6 col-md-2 mb-4 book-card">
+                            <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                                <div class="book-cover-container">
+                            @if (!string.IsNullOrEmpty(book.CoverImageUrl))
+                            {
+                                            <img src="/img/@book.CoverImageUrl" class="book-cover" alt="@book.Name" />
+                            }
+                            else
+                            {
+                                            <img src="/img/book-placeholder.jpg" class="book-cover" alt="@book.Name" />
+                            }
+
+                            @if (book.AvailableCopies > 0)
+                            {
+                                            <span class="availability-badge available">Available</span>
+                            }
+                            else
+                            {
+                                            <span class="availability-badge unavailable">Unavailable</span>
+                            }
+                                </div>
+                            </a>
+                            <p class="book-title">@book.Name</p>
+                            <p class="book-author">by @book.Author</p>
+                        </div>
+            }
+            </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/categories-details.css" />

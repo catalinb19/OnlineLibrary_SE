@@ -1,0 +1,148 @@
+﻿/* Confirmation Container */
+.confirmation-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Confirmation Header */
+.confirmation-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.confirmation-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.confirmation-header h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-header p {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* Book Image */
+.book-image {
+    text-align: center;
+}
+
+    .book-image img {
+        max-width: 100%;
+        height: auto;
+        max-height: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+
+/* Confirmation Info */
+.confirmation-info {
+    padding: 0 1rem;
+}
+
+    .confirmation-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+        color: #333;
+    }
+
+.book-author {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+/* Borrowing Details */
+.borrowing-details {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    margin-bottom: 0.75rem;
+    display: flex;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #495057;
+    width: 150px;
+}
+
+.detail-value {
+    color: #333;
+}
+
+/* Confirmation Instructions */
+.confirmation-instructions {
+    background-color: #e9f7ef;
+    padding: 1.5rem;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}
+
+    .confirmation-instructions h4 {
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+
+.library-hours {
+    margin-top: 1rem;
+}
+
+    .library-hours h5 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .library-hours ul {
+        padding-left: 1.5rem;
+    }
+
+/* Confirmation Actions */
+.confirmation-actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+    .confirmation-actions .btn {
+        margin: 0 0.5rem;
+        padding: 0.5rem 1.5rem;
+    }
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .confirmation-container {
+        padding: 1.5rem;
+    }
+
+    .book-image {
+        margin-bottom: 1.5rem;
+    }
+
+    .confirmation-info {
+        padding: 0;
+    }
+
+    .detail-item {
+        flex-direction: column;
+    }
+
+    .detail-label {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+}

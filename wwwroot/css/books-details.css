@@ -1,0 +1,48 @@
+﻿.book-cover-container {
+    position: relative;
+}
+
+.book-cover {
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.availability-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.available {
+    background-color: #28a745;
+}
+
+.unavailable {
+    background-color: #dc3545;
+}
+
+.rating-stars {
+    color: #ffc107;
+}
+
+.book-actions {
+    margin-top: 20px;
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
+}
+
+    .list-group-item:first-child {
+        border-top: none;
+    }
+
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
