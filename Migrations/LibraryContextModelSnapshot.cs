@@ -450,6 +450,30 @@ namespace OnlineLibrary.Migrations
 
                     b.Property<string>("ReviewText")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("BorrowingId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("Borrowings");
+                });
+
+            modelBuilder.Entity("OnlineLibrary.Models.ContactMessage", b =>
+                {
+                    b.Property<int>("ContactMessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactMessageId"));
+
+                    b.Property<string>("AdminResponse")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewerName")
