@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using OnlineLibrary.Models;
 
 namespace OnlineLibrary.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class BooksController : Controller
     {
         private readonly LibraryContext _context;
@@ -33,10 +35,24 @@ namespace OnlineLibrary.Controllers
             }
 
             var book = await _context.Books
+                .Include(b => b.Reviews)
                 .FirstOrDefaultAsync(m => m.BookId == id);
+
             if (book == null)
             {
                 return NotFound();
+            }
+
+            // Calculate average rating if there are reviews
+            if (book.Reviews != null && book.Reviews.Any())
+            {
+                ViewBag.AverageRating = book.Reviews.Average(r => r.Rating);
+                ViewBag.ReviewCount = book.Reviews.Count;
+            }
+            else
+            {
+                ViewBag.AverageRating = 0;
+                ViewBag.ReviewCount = 0;
             }
 
             return View(book);
@@ -49,11 +65,9 @@ namespace OnlineLibrary.Controllers
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookId,Name,Author,ReleaseDate")] Book book)
+        public async Task<IActionResult> Create([Bind("BookId,Name,Author,ReleaseDate,ISBN,Genre,Language,Pages,AvailableCopies,Description,CoverImageUrl")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -77,15 +91,15 @@ namespace OnlineLibrary.Controllers
             {
                 return NotFound();
             }
+
+
             return View(book);
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookId,Name,Author,ReleaseDate")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("BookId,Name,Author,ReleaseDate,ISBN,Genre,Language,Pages,AvailableCopies,Description,CoverImageUrl")] Book book)
         {
             if (id != book.BookId)
             {

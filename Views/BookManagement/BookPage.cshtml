@@ -1,135 +1,182 @@
-﻿@{
+﻿@model OnlineLibrary.Models.Book
+
+@{
     ViewData["Title"] = "Book Details";
+    var averageRating = ViewBag.AverageRating ?? 0;
+    var reviewCount = ViewBag.ReviewCount ?? 0;
+    var similarBooks = ViewBag.SimilarBooks as List<OnlineLibrary.Models.Book> ?? new List<OnlineLibrary.Models.Book>();
 }
 
 <div class="book-page-container">
     <div class="book-details-container">
         <div class="book-image-container">
-            <img src="/img/book1.jpg" alt="Book Cover" class="book-cover-image" />
-            <div class="book-availability available">
-                <span>Available</span>
+            @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+            {
+                <img src="/img/@Model.CoverImageUrl" alt="@Model.Name Cover" class="book-cover-image" />
+            }
+            else
+            {
+                <img src="/img/book-placeholder.jpg" alt="@Model.Name Cover" class="book-cover-image" />
+            }
+
+            <div class="book-availability @(Model.AvailableCopies > 0 ? "available" : "unavailable")">
+                <span>@(Model.AvailableCopies > 0 ? "Available" : "Unavailable")</span>
             </div>
         </div>
 
         <div class="book-info-container">
-            <h1 class="book-title">Where the Crawdads Sing</h1>
-            <h3 class="book-author">by Delia Owens</h3>
+            <h1 class="book-title">@Model.Name</h1>
+            <h3 class="book-author">by @Model.Author</h3>
 
             <div class="book-metadata">
                 <div class="metadata-item">
                     <span class="metadata-label">Published:</span>
-                    <span class="metadata-value">August 14, 2018</span>
+                    <span class="metadata-value">@Model.ReleaseDate.ToString("MMMM d, yyyy")</span>
                 </div>
-                <div class="metadata-item">
-                    <span class="metadata-label">Pages:</span>
-                    <span class="metadata-value">384</span>
-                </div>
-                <div class="metadata-item">
-                    <span class="metadata-label">ISBN:</span>
-                    <span class="metadata-value">978-0735219090</span>
-                </div>
-                <div class="metadata-item">
-                    <span class="metadata-label">Genre:</span>
-                    <span class="metadata-value">Fiction, Mystery</span>
-                </div>
-                <div class="metadata-item">
-                    <span class="metadata-label">Language:</span>
-                    <span class="metadata-value">English</span>
-                </div>
+                @if (Model.Pages > 0)
+                {
+                    <div class="metadata-item">
+                        <span class="metadata-label">Pages:</span>
+                        <span class="metadata-value">@Model.Pages</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ISBN))
+                {
+                    <div class="metadata-item">
+                        <span class="metadata-label">ISBN:</span>
+                        <span class="metadata-value">@Model.ISBN</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.Genre))
+                {
+                    <div class="metadata-item">
+                        <span class="metadata-label">Genre:</span>
+                        <span class="metadata-value">@Model.Genre</span>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.Language))
+                {
+                    <div class="metadata-item">
+                        <span class="metadata-label">Language:</span>
+                        <span class="metadata-value">@Model.Language</span>
+                    </div>
+                }
                 <div class="metadata-item">
                     <span class="metadata-label">Available Copies:</span>
-                    <span class="metadata-value">3</span>
+                    <span class="metadata-value">@Model.AvailableCopies</span>
                 </div>
             </div>
 
             <div class="book-description">
                 <h4>Description</h4>
-                <p>For years, rumors of the "Marsh Girl" have haunted Barkley Cove, a quiet town on the North Carolina coast. So in late 1969, when handsome Chase Andrews is found dead, the locals immediately suspect Kya Clark, the so-called Marsh Girl. But Kya is not what they say. Sensitive and intelligent, she has survived for years alone in the marsh that she calls home, finding friends in the gulls and lessons in the sand. Then the time comes when she yearns to be touched and loved. When two young men from town become intrigued by her wild beauty, Kya opens herself to a new life—until the unthinkable happens.</p>
+                <p>@(string.IsNullOrEmpty(Model.Description) ? "No description available." : Model.Description)</p>
             </div>
 
             <div class="book-actions">
-                <a href="/BookManagement/BorrowPage" class="btn btn-primary btn-borrow">Borrow This Book</a>
+                @if (Model.AvailableCopies > 0)
+                {
+                    <a href="@Url.Action("BorrowPage", "BookManagement", new { id = Model.BookId })" class="btn btn-primary btn-borrow">Borrow This Book</a>
+                }
+                else
+                {
+                    <button class="btn btn-secondary btn-borrow" disabled>Currently Unavailable</button>
+                }
                 <button class="btn btn-success btn-review" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a Review</button>
-                <button class="btn btn-outline-secondary btn-add-wishlist">Add to Wishlist</button>
             </div>
 
             <div class="book-ratings">
                 <h4>Ratings & Reviews</h4>
                 <div class="overall-rating">
                     <div class="rating-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            var floorRating = Math.Floor((double)averageRating);
+
+                            if (i <= floorRating)
+                            {
+                                <i class="fas fa-star"></i>
+                            }
+                            else if (i - 0.5 <= (double)averageRating)
+                            {
+                                <i class="fas fa-star-half-alt"></i>
+                            }
+                            else
+                            {
+                                <i class="far fa-star"></i>
+                            }
+                        }
+
                     </div>
-                    <span class="rating-value">4.5/5</span>
-                    <span class="rating-count">(128 reviews)</span>
+                    <span class="rating-value">@averageRating.ToString("0.0")/5</span>
+                    <span class="rating-count">(@reviewCount reviews)</span>
                 </div>
 
                 <div class="user-reviews">
-                    <div class="review-item">
-                        <div class="review-header">
-                            <span class="reviewer-name">Jane Smith</span>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate).Take(5))
+                        {
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <span class="reviewer-name">@review.ReviewerName</span>
+                                    <div class="review-rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= review.Rating)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <p class="review-date">@review.ReviewDate.ToString("MMMM d, yyyy")</p>
+                                <p class="review-text">@review.ReviewText</p>
                             </div>
-                        </div>
-                        <p class="review-text">This book was absolutely captivating from start to finish. The character development is incredible, and the story kept me engaged throughout.</p>
-                    </div>
-
-                    <div class="review-item">
-                        <div class="review-header">
-                            <span class="reviewer-name">John Doe</span>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="review-text">A beautiful and haunting story. The descriptions of the marsh and nature are so vivid that you feel like you're right there with Kya.</p>
-                    </div>
-
-                    <!-- New reviews will be added here dynamically -->
-                    <div id="newReviewsContainer"></div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No reviews yet. Be the first to review this book!</p>
+                    }
                 </div>
 
-                <a href="#" class="view-all-reviews">View all 128 reviews</a>
+                @if (Model.Reviews != null && Model.Reviews.Count > 5)
+                {
+                    <a href="#" class="view-all-reviews">View all @Model.Reviews.Count reviews</a>
+                }
             </div>
         </div>
     </div>
 
-    <div class="similar-books-section">
-        <h3>You May Also Like</h3>
-        <div class="similar-books-container">
-            <div class="similar-book-item">
-                <img src="/img/book2.jpg" alt="Similar Book 1" />
-                <h5>The Great Gatsby</h5>
-                <p>F. Scott Fitzgerald</p>
-            </div>
-            <div class="similar-book-item">
-                <img src="/img/book3.jpg" alt="Similar Book 2" />
-                <h5>1984</h5>
-                <p>George Orwell</p>
-            </div>
-            <div class="similar-book-item">
-                <img src="/img/book4.jpg" alt="Similar Book 3" />
-                <h5>To Kill a Mockingbird</h5>
-                <p>Harper Lee</p>
-            </div>
-            <div class="similar-book-item">
-                <img src="/img/book5.jpg" alt="Similar Book 4" />
-                <h5>Harry Potter and the Sorcerer's Stone</h5>
-                <p>J.K. Rowling</p>
+    @if (similarBooks.Any())
+    {
+        <div class="similar-books-section">
+            <h3>You May Also Like</h3>
+            <div class="similar-books-container">
+                @foreach (var book in similarBooks)
+                {
+                    <div class="similar-book-item">
+                        <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                            @if (!string.IsNullOrEmpty(book.CoverImageUrl))
+                            {
+                                <img src="/img/@book.CoverImageUrl" alt="@book.Name" />
+                            }
+                            else
+                            {
+                                <img src="/img/book-placeholder.jpg" alt="@book.Name" />
+                            }
+                            <h5>@book.Name</h5>
+                            <p>@book.Author</p>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
-    </div>
+    }
 </div>
 
 <!-- Review Modal -->
@@ -137,14 +184,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="reviewModalLabel">Write a Review</h5>
+                <h5 class="modal-title" id="reviewModalLabel">Write a Review for "@Model.Name"</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="reviewForm">
+                <form id="reviewForm" asp-action="AddReview" asp-controller="BookManagement" method="post">
+                    <input type="hidden" name="bookId" value="@Model.BookId" />
+                    @Html.AntiForgeryToken()
+
                     <div class="form-group mb-3">
                         <label for="reviewerName">Your Name</label>
-                        <input type="text" class="form-control" id="reviewerName" required>
+                        <input type="text" class="form-control" id="reviewerName" name="reviewerName" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Your Rating</label>
@@ -156,19 +206,19 @@
                                 <i class="far fa-star" data-rating="4"></i>
                                 <i class="far fa-star" data-rating="5"></i>
                             </div>
-                            <input type="hidden" id="selectedRating" value="0" required>
+                            <input type="hidden" id="selectedRating" name="rating" value="0" required>
                             <div class="rating-text">Select a rating</div>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label for="reviewText">Your Review</label>
-                        <textarea class="form-control" id="reviewText" rows="5" required></textarea>
+                        <textarea class="form-control" id="reviewText" name="reviewText" rows="5" required></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="submitReview">Submit Review</button>
+                <button type="submit" form="reviewForm" class="btn btn-primary">Submit Review</button>
             </div>
         </div>
     </div>
@@ -240,78 +290,6 @@
                 'Excellent'
             ];
             ratingText.textContent = ratingTexts[rating];
-        }
-
-        // Submit review
-        const submitButton = document.getElementById('submitReview');
-        submitButton.addEventListener('click', function() {
-            const reviewerName = document.getElementById('reviewerName').value;
-            const rating = document.getElementById('selectedRating').value;
-            const reviewText = document.getElementById('reviewText').value;
-
-            // Validate form
-            if (!reviewerName || rating === '0' || !reviewText) {
-                alert('Please fill in all fields and select a rating.');
-                return;
-            }
-
-            // In a real application, you would send this data to the server
-            // For this example, we'll just add it to the page
-            addReviewToPage(reviewerName, rating, reviewText);
-
-            // Close the modal and reset form
-            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-            modal.hide();
-            document.getElementById('reviewForm').reset();
-            resetStars();
-            selectedRating.value = '0';
-            ratingText.textContent = 'Select a rating';
-        });
-
-        function addReviewToPage(name, rating, text) {
-            const reviewsContainer = document.getElementById('newReviewsContainer');
-
-            const reviewItem = document.createElement('div');
-            reviewItem.className = 'review-item';
-
-            const reviewHeader = document.createElement('div');
-            reviewHeader.className = 'review-header';
-
-            const reviewerName = document.createElement('span');
-            reviewerName.className = 'reviewer-name';
-            reviewerName.textContent = name;
-
-            const reviewRating = document.createElement('div');
-            reviewRating.className = 'review-rating';
-
-            // Add stars based on rating
-            for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('i');
-                if (i <= rating) {
-                    star.className = 'fas fa-star';
-                } else {
-                    star.className = 'far fa-star';
-                }
-                reviewRating.appendChild(star);
-            }
-
-            const reviewText = document.createElement('p');
-            reviewText.className = 'review-text';
-            reviewText.textContent = text;
-
-            // Assemble the review
-            reviewHeader.appendChild(reviewerName);
-            reviewHeader.appendChild(reviewRating);
-            reviewItem.appendChild(reviewHeader);
-            reviewItem.appendChild(reviewText);
-
-            // Add to the page
-            reviewsContainer.appendChild(reviewItem);
-
-            // Update review count
-            const ratingCount = document.querySelector('.rating-count');
-            const currentCount = parseInt(ratingCount.textContent.match(/\d+/)[0]);
-            ratingCount.textContent = `(${currentCount + 1} reviews)`;
         }
     });
 </script>

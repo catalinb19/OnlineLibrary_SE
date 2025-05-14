@@ -1,0 +1,75 @@
+﻿@page
+@model BorrowingHistoryModel
+@{
+    ViewData["Title"] = "Borrowing History";
+    ViewData["ActivePage"] = ManageNavPages.BorrowingHistory;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="borrowing-history-container">
+    @if (Model.BorrowingHistory.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Author</th>
+                        <th>Borrowed Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var borrowing in Model.BorrowingHistory)
+                    {
+                        <tr>
+                            <td>
+                                <div class="book-info">
+                                    @*  @if (!string.IsNullOrEmpty(borrowing.Book.CoverImageUrl))
+                                    {
+                                        <img src="/img/@borrowing.Book.CoverImageUrl" alt="@borrowing.Book.Name Cover" class="book-cover" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/book-placeholder.jpg" alt="@borrowing.Book.Name Cover" class="book-cover" />
+                                    }
+                                    *@
+                                    <span>@borrowing.Book.Name</span>
+                                </div>
+                            </td>
+
+                            <td>@borrowing.Book.Author</td>
+                            <td>@borrowing.BorrowDate.ToString("MMM d, yyyy")</td>
+                            <td>@borrowing.ActualReturnDate?.ToString("MMM d, yyyy")</td>
+                            <td>
+                                @if (borrowing.Status == "Returned")
+                                {
+                                    <span class="badge bg-success">Returned</span>
+                                }
+                                else if (borrowing.Status == "Overdue")
+                                {
+                                    <span class="badge bg-danger">Overdue</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@borrowing.Status</span>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            You don't have any borrowing history yet.
+        </div>
+    }
+</div>
+<link rel="stylesheet" href="~/css/account-profile.css" />

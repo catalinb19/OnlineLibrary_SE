@@ -2,39 +2,163 @@
 
 @{
     ViewData["Title"] = "Book Details";
+    var averageRating = ViewBag.AverageRating ?? 0;
+    var reviewCount = ViewBag.ReviewCount ?? 0;
 }
 
-<div class="books-container">
-    <h1>Book Details</h1>
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">@Model.Name</h4>
-                    <dl class="row">
-                        <dt class="col-sm-3">Title</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
-
-                        <dt class="col-sm-3">Author</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Author)</dd>
-
-                        <dt class="col-sm-3">Release Date</dt>
-                        <dd class="col-sm-9">@Html.DisplayFor(model => model.ReleaseDate)</dd>
-                    </dl>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Book Details</h3>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.BookId" class="btn btn-sm btn-light me-2">Edit</a>
+                    <a asp-action="Index" class="btn btn-sm btn-light">Back to List</a>
                 </div>
-                <div class="card-footer">
-                    <a asp-action="Edit" asp-route-id="@Model?.BookId" class="btn btn-primary">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left"></i> Back to List
-                    </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="book-cover-container mb-3">
+                        @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+                        {
+                            <img src="/img/@Model.CoverImageUrl" class="img-fluid rounded book-cover" alt="@Model.Name">
+                        }
+                        else
+                        {
+                            <img src="/img/book-placeholder.jpg" class="img-fluid rounded book-cover" alt="@Model.Name">
+                        }
+
+                        @if (Model.AvailableCopies > 0)
+                        {
+                            <span class="availability-badge available">@Model.AvailableCopies copies available</span>
+                        }
+                        else
+                        {
+                            <span class="availability-badge unavailable">Currently unavailable</span>
+                        }
+                    </div>
+
+                    <div class="book-actions">
+                        <a href="@Url.Action("BookPage", "BookManagement", new { id = Model.BookId })" class="btn btn-primary w-100 mb-2">View Book Page</a>
+                        @if (Model.AvailableCopies > 0)
+                        {
+                            <a href="@Url.Action("BorrowPage", "BookManagement", new { id = Model.BookId })" class="btn btn-success w-100">Borrow This Book</a>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <h2 class="mb-1">@Model.Name</h2>
+                    <h5 class="text-muted mb-3">by @Model.Author</h5>
+
+                    <div class="mb-4">
+                        @if (reviewCount > 0)
+                        {
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="rating-stars me-2">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Math.Floor(averageRating))
+                                        {
+                                            <i class="fas fa-star text-warning"></i>
+                                        }
+                                        else if (i - 0.5 <= averageRating)
+                                        {
+                                            <i class="fas fa-star-half-alt text-warning"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="far fa-star text-warning"></i>
+                                        }
+                                    }
+                                </div>
+                                <span>@averageRating.ToString("0.0")/5 (@reviewCount reviews)</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Published:</dt>
+                                <dd class="col-sm-8">@Model.ReleaseDate.ToString("MMMM d, yyyy")</dd>
+
+                                @if (!string.IsNullOrEmpty(Model.ISBN))
+                                {
+                                    <dt class="col-sm-4">ISBN:</dt>
+                                    <dd class="col-sm-8">@Model.ISBN</dd>
+                                }
+
+                                @if (!string.IsNullOrEmpty(Model.Genre))
+                                {
+                                    <dt class="col-sm-4">Genre:</dt>
+                                    <dd class="col-sm-8">@Model.Genre</dd>
+                                }
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                @if (!string.IsNullOrEmpty(Model.Language))
+                                {
+                                    <dt class="col-sm-4">Language:</dt>
+                                    <dd class="col-sm-8">@Model.Language</dd>
+                                }
+
+                                @if (Model.Pages > 0)
+                                {
+                                    <dt class="col-sm-4">Pages:</dt>
+                                    <dd class="col-sm-8">@Model.Pages</dd>
+                                }
+
+                                <dt class="col-sm-4">Copies:</dt>
+                                <dd class="col-sm-8">@Model.AvailableCopies</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Description</h5>
+                        <p>@(string.IsNullOrEmpty(Model.Description) ? "No description available." : Model.Description)</p>
+                    </div>
+
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        <div class="mb-3">
+                            <h5>Recent Reviews</h5>
+                            <div class="list-group">
+                                @foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate).Take(3))
+                                {
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-1">@review.ReviewerName</h6>
+                                            <div class="rating-stars">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= review.Rating)
+                                                    {
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="far fa-star text-warning"></i>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">@review.ReviewDate.ToString("MMMM d, yyyy")</small>
+                                        <p class="mb-1 mt-2">@review.ReviewText</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<link rel="stylesheet" href="~/css/books.css" />
+<link rel="stylesheet" href="~/css/books-details.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />

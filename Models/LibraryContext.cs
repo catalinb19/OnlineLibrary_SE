@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using OnlineLibrary.Models;
 
 namespace OnlineLibrary.Models
 {
-    public class LibraryContext : DbContext
+    public class LibraryContext : IdentityDbContext<IdentityUser>
     {
         public LibraryContext(DbContextOptions<LibraryContext> options)
             : base(options)

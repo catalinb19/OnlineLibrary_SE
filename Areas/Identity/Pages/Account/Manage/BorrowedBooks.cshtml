@@ -1,0 +1,80 @@
+﻿@page
+@model BorrowedBooksModel
+@{
+    ViewData["Title"] = "Borrowed Books";
+    ViewData["ActivePage"] = ManageNavPages.BorrowedBooks;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="borrowed-books-container">
+    @if (Model.CurrentBorrowings.Any())
+    {
+        <div class="borrowed-books">
+            @foreach (var borrowing in Model.CurrentBorrowings)
+            {
+                <div class="book-item">
+                    @if (!string.IsNullOrEmpty(borrowing.Book.CoverImageUrl))
+                    {
+                        <img src="/img/@borrowing.Book.CoverImageUrl" alt="@borrowing.Book.Name Cover" class="book-cover" />
+                    }
+                    else
+                    {
+                        <img src="/img/book-placeholder.jpg" alt="@borrowing.Book.Name Cover" class="book-cover" />
+                    }
+                    <div class="book-details">
+                        <h4>@borrowing.Book.Name</h4>
+                        <p>Author: @borrowing.Book.Author</p>
+                        <p>Borrowed on: @borrowing.BorrowDate.ToString("MMMM d, yyyy")</p>
+                        <p>Due date: @borrowing.ExpectedReturnDate.ToString("MMMM d, yyyy")</p>
+
+                        <div class="book-actions">
+                            @foreach (var request in borrowing.BookRequests)
+                            {
+                                <p>
+                                    @if (request.Status == "Pending")
+                                    {
+                                        <span class="badge bg-warning text-dark">@request.RequestType Request Pending</span>
+                                    }
+                                    else if (request.Status == "Approved")
+                                    {
+                                        <span class="badge bg-success">Approved</span>
+                                    }
+                                    else if (request.Status == "Denied")
+                                    {
+                                        <span class="badge bg-danger">Denied</span>
+                                    }
+                                </p>
+                            }
+
+                            @if (!borrowing.BookRequests.Any(r => r.RequestType == "Extension" && r.Status == "Pending"))
+                            {
+                                <form method="post" asp-page-handler="RequestExtension" style="display: inline;">
+                                    <input type="hidden" name="borrowingId" value="@borrowing.BorrowingId" />
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Request Extension</button>
+                                </form>
+                            }
+
+                            @if (!borrowing.BookRequests.Any(r => r.RequestType == "Return" && r.Status == "Pending"))
+                            {
+                                <form method="post" asp-page-handler="RequestReturn" style="display: inline;">
+                                    <input type="hidden" name="borrowingId" value="@borrowing.BorrowingId" />
+                                    <button type="submit" class="btn btn-outline-success btn-sm">Request Return</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            You don't have any books currently borrowed.
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/account-profile.css" />

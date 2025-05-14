@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home-index.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
 </head>
 <body>
     <div class="hero-section">
@@ -19,76 +20,56 @@
             <h1>Welcome to Online Library</h1>
             <p>Discover thousands of books, explore new genres, and find your next favorite read. Our digital library is open 24/7 for all your reading needs.</p>
 
-            <div class="search-container">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for books, authors, or genres...">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search"></i> Search
-                    </button>
+            <form action="@Url.Action("SearchResults", "Home")" method="get">
+                <div class="search-container">
+                    <div class="input-group">
+                        <input type="text" name="searchTerm" class="form-control" placeholder="Search for a book or author...">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
+
+
+    <!-- Popular Books Section -->
     <div class="container book-section">
         <h2 class="left-aligned-heading">Popular Books</h2>
         <div class="row">
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book1.jpg" alt="Book 1" />
-                <p>Where the Crawdads Sing by Delia Owens</p>
-            </div>
+            @foreach (var book in ViewBag.PopularBooks)
+            {
+                double avgRating = ViewBag.AverageRatings[book.BookId];
 
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book2.jpg" alt="Book 2" />
-                <p>The Great Gatsby by F. Scott Fitzgerald</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book3.jpg" alt="Book 3" />
-                <p>1984 by George Orwell</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book4.jpg" alt="Book 4" />
-                <p>To Kill a Mockingbird by Harper Lee</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book5.jpg" alt="Book 5" />
-                <p>Harry Potter and the Sorcerer's Stone by J.K. Rowling</p>
-            </div>
+                <div class="col-6 col-md-2 book-card">
+                    <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                        <img src="/img/@book.CoverImageUrl" alt="@book.Name" />
+                    </a>
+                    <p>@book.Name by @book.Author</p>
+                    <p>Rating: @avgRating.ToString("0.0") ★</p>
+                </div>
+            }
         </div>
     </div>
 
+    <!-- New Books Section -->
     <div class="container book-section">
         <h2 class="left-aligned-heading">New Books</h2>
         <div class="row">
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book6.jpeg" alt="New Book 1" />
-                <p>The Invisible Life of Addie LaRue by V.E. Schwab</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book7.jpeg" alt="New Book 2" />
-                <p>Project Hail Mary by Andy Weir</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book8.jpeg" alt="New Book 3" />
-                <p>The Midnight Library by Matt Haig</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book9.jpg" alt="New Book 4" />
-                <p>Klara and the Sun by Kazuo Ishiguro</p>
-            </div>
-
-            <div class="col-6 col-md-2 book-card">
-                <img src="/img/book10.jpg" alt="New Book 5" />
-                <p>The Last House on Needless Street by Catriona Ward</p>
-            </div>
+            @foreach (var book in ViewBag.NewBooks)
+            {
+                <div class="col-6 col-md-2 book-card">
+                    <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                        <img src="/img/@book.CoverImageUrl" alt="@book.Name" />
+                    </a>
+                    <p>@book.Name by @book.Author</p>
+                </div>
+            }
         </div>
     </div>
+
 
     <div class="container features-section">
         <h2>Why Choose Our Online Library</h2>
@@ -139,9 +120,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 </body>
 </html>
+

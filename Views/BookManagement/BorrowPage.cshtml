@@ -1,37 +1,61 @@
-﻿@{
+﻿@model OnlineLibrary.Models.Book
+
+@{
     ViewData["Title"] = "Borrow Book";
+    var borrowDate = ViewBag.BorrowDate;
+    var returnDate = ViewBag.ReturnDate;
 }
 
 <div class="borrow-page-container">
     <div class="borrow-header">
         <h2>Borrow a Book</h2>
-        <p>Complete the form below to borrow "Where the Crawdads Sing" by Delia Owens</p>
+        <p>Complete the form below to borrow "@Model.Name" by @Model.Author</p>
     </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong> @TempData["ErrorMessage"]
+        </div>
+    }
 
     <div class="borrow-content">
         <div class="book-preview">
-            <img src="/img/book1.jpg" alt="Book Cover" class="book-cover" />
+            @if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+            {
+                <img src="/img/@Model.CoverImageUrl" alt="@Model.Name Cover" class="book-cover" />
+            }
+            else
+            {
+                <img src="/img/book-placeholder.jpg" alt="@Model.Name Cover" class="book-cover" />
+            }
             <div class="book-info">
-                <h3>Where the Crawdads Sing</h3>
-                <p class="book-author">by Delia Owens</p>
+                <h3>@Model.Name</h3>
+                <p class="book-author">by @Model.Author</p>
                 <div class="book-details">
-                    <p><strong>ISBN:</strong> 978-0735219090</p>
-                    <p><strong>Available Copies:</strong> 3</p>
-                    <p><strong>Location:</strong> Fiction Section, Shelf B4</p>
+                    @if (!string.IsNullOrEmpty(Model.ISBN))
+                    {
+                        <p><strong>ISBN:</strong> @Model.ISBN</p>
+                    }
+                    <p><strong>Available Copies:</strong> @Model.AvailableCopies</p>
+                    <p><strong>Location:</strong> @(string.IsNullOrEmpty(Model.Genre) ? "General Section" : $"{Model.Genre} Section")</p>
                 </div>
             </div>
         </div>
 
         <div class="borrow-form-container">
-            <form class="borrow-form">
+            <form id="borrowForm" class="borrow-form" asp-action="ProcessBorrow" asp-controller="BookManagement" method="post">
+                <input type="hidden" name="bookId" value="@Model.BookId" />
+                @Html.AntiForgeryToken()
+
                 <div class="form-group">
                     <label for="borrowDate">Borrow Date</label>
-                    <input type="date" id="borrowDate" name="borrowDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                    <input type="date" id="borrowDate" name="borrowDate" class="form-control" value="@borrowDate" readonly />
                 </div>
 
                 <div class="form-group">
                     <label for="returnDate">Expected Return Date</label>
-                    <input type="date" id="returnDate" name="returnDate" class="form-control" value="@DateTime.Now.AddDays(14).ToString("yyyy-MM-dd")" readonly />
+                    <input type="date" id="returnDate" name="returnDate" class="form-control" value="@returnDate" readonly />
                     <small class="form-text text-muted">Standard borrowing period is 14 days</small>
                 </div>
 
@@ -54,7 +78,8 @@
                 </div>
 
                 <div class="form-check">
-                    <input type="checkbox" id="termsAgreement" name="termsAgreement" class="form-check-input" required />
+                    <input type="checkbox" id="termsAgreement" name="termsAgreement" class="form-check-input" value="true" />
+                    <input type="hidden" name="termsAgreement" value="false" />
                     <label class="form-check-label" for="termsAgreement">
                         I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#borrowingTermsModal">borrowing terms and conditions</a>
                     </label>
@@ -62,7 +87,7 @@
 
                 <div class="borrow-actions">
                     <button type="submit" class="btn btn-primary btn-borrow">Confirm Borrowing</button>
-                    <a href="/BookManagement/BookPage" class="btn btn-outline-secondary btn-cancel">Cancel</a>
+                    <a href="@Url.Action("BookPage", "BookManagement", new { id = Model.BookId })" class="btn btn-outline-secondary btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>
@@ -124,12 +149,26 @@
     document.addEventListener('DOMContentLoaded', function() {
         const borrowingMethodSelect = document.getElementById('borrowingMethod');
         const deliveryAddressContainer = document.getElementById('deliveryAddressContainer');
+        const borrowForm = document.getElementById('borrowForm');
+        const termsCheckbox = document.getElementById('termsAgreement');
 
         borrowingMethodSelect.addEventListener('change', function() {
             if (this.value === 'delivery') {
                 deliveryAddressContainer.classList.remove('d-none');
             } else {
                 deliveryAddressContainer.classList.add('d-none');
+            }
+        });
+
+        // Fix for checkbox submission
+        borrowForm.addEventListener('submit', function(event) {
+            console.log('Form is being submitted');
+            console.log('Terms checkbox checked:', termsCheckbox.checked);
+
+            // Remove the hidden field if the checkbox is checked
+            if (termsCheckbox.checked) {
+                const hiddenFields = borrowForm.querySelectorAll('input[type="hidden"][name="termsAgreement"]');
+                hiddenFields.forEach(field => field.remove());
             }
         });
     });
