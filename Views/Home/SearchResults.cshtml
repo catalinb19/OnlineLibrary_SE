@@ -1,0 +1,64 @@
+﻿@model IEnumerable<OnlineLibrary.Models.Book>
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="container mt-4">
+    <h1>Search Results for "@ViewBag.SearchTerm"</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>No books found matching your search criteria.</p>
+            <p>Try searching with different keywords or browse our categories.</p>
+        </div>
+    }
+    else
+    {
+        <p>Found @Model.Count() @(Model.Count() == 1 ? "book" : "books") matching your search.</p>
+
+        <div class="row">
+            @foreach (var book in Model)
+            {
+                <div class="col-6 col-md-3 col-lg-2 mb-4">
+                    <div class="book-card">
+                        <div class="book-cover-container">
+                            @if (!string.IsNullOrEmpty(book.CoverImageUrl))
+                            {
+                                <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                                    <img src="/img/@book.CoverImageUrl" alt="@book.Name" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("BookPage", "BookManagement", new { id = book.BookId })">
+                                    <img src="/img/book-placeholder.jpg" alt="@book.Name" />
+                                </a>
+                            }
+
+                            <p>@book.Name by @book.Author</p>
+
+                            @if (book.AvailableCopies > 0)
+                            {
+                                <span class="availability-badge available">Available</span>
+                            }
+                            else
+                            {
+                                <span class="availability-badge unavailable">Unavailable</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/search-results.css" />

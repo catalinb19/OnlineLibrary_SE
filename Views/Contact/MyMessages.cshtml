@@ -1,0 +1,69 @@
+﻿@model IEnumerable<OnlineLibrary.Models.ContactMessage>
+
+@{
+    ViewData["Title"] = "My Messages";
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="Index" class="btn btn-primary">Send New Message</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>You haven't sent any messages yet.</p>
+            <p>If you have any questions or feedback, please <a asp-action="Index">contact us</a>.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model)
+                    {
+                        <tr class="@(!message.IsRead ? "unread-message" : "")">
+                            <td>@message.ContactMessageId</td>
+                            <td>@message.SubmissionDate.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>@message.Subject</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(message.AdminResponse))
+                                {
+                                    <span class="badge bg-success">Responded</span>
+                                }
+                                else if (message.IsRead)
+                                {
+                                    <span class="badge bg-info">Read</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="MessageDetails" asp-route-id="@message.ContactMessageId" class="btn btn-primary btn-sm">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css" />

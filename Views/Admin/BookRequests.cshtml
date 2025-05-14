@@ -1,0 +1,162 @@
+﻿@model IEnumerable<OnlineLibrary.Models.BookRequest>
+
+@{
+    ViewData["Title"] = "Pending Book Requests";
+    var users = ViewBag.Users as Dictionary<string, Microsoft.AspNetCore.Identity.IdentityUser>;
+}
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>@ViewData["Title"]</h1>
+        <div class="admin-actions">
+            <a asp-action="ProcessedRequests" class="btn btn-outline-secondary">View Processed Requests</a>
+        </div>
+    </div>
+
+    @if (TempData["StatusMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["StatusMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            There are no pending requests at this time.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped admin-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>User</th>
+                        <th>Book</th>
+                        <th>Request Type</th>
+                        <th>Request Date</th>
+                        <th>Current Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var request in Model)
+                    {
+                        <tr>
+                            <td>@request.BookRequestId</td>
+                            <td>
+                                @if (users.TryGetValue(request.UserId, out var user))
+                                {
+                                    @user.Email
+                                }
+                                else
+                                {
+                                    <span>Unknown User</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="book-info">
+                                    @if (!string.IsNullOrEmpty(request.Borrowing.Book.CoverImageUrl))
+                                    {
+                                        <img src="/img/@request.Borrowing.Book.CoverImageUrl" alt="@request.Borrowing.Book.Name Cover" class="admin-book-cover" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/book-placeholder.jpg" alt="@request.Borrowing.Book.Name Cover" class="admin-book-cover" />
+                                    }
+                                    <div>
+                                        <strong>@request.Borrowing.Book.Name</strong>
+                                        <div>by @request.Borrowing.Book.Author</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (request.RequestType == "Return")
+                                {
+                                    <span class="badge bg-success">Return</span>
+                                }
+                                else if (request.RequestType == "Extension")
+                                {
+                                    <span class="badge bg-primary">Extension</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@request.RequestType</span>
+                                }
+                            </td>
+                            <td>@request.RequestDate.ToString("MMM d, yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal-@request.BookRequestId">
+                                    Approve
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#denyModal-@request.BookRequestId">
+                                    Deny
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Approve Modal -->
+                        <div class="modal fade" id="approveModal-@request.BookRequestId" tabindex="-1" aria-labelledby="approveModalLabel-@request.BookRequestId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="approveModalLabel-@request.BookRequestId">Approve Request</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form asp-action="ApproveRequest" method="post">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="requestId" value="@request.BookRequestId" />
+                                            <p>Are you sure you want to approve this @request.RequestType.ToLower() request for "@request.Borrowing.Book.Name"?</p>
+                                            <div class="form-group">
+                                                <label for="adminNotes">Admin Notes (Optional)</label>
+                                                <textarea name="adminNotes" id="adminNotes" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-success">Approve</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deny Modal -->
+                        <div class="modal fade" id="denyModal-@request.BookRequestId" tabindex="-1" aria-labelledby="denyModalLabel-@request.BookRequestId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="denyModalLabel-@request.BookRequestId">Deny Request</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form asp-action="DenyRequest" method="post">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="requestId" value="@request.BookRequestId" />
+                                            <p>Are you sure you want to deny this @request.RequestType.ToLower() request for "@request.Borrowing.Book.Name"?</p>
+                                            <div class="form-group">
+                                                <label for="adminNotes">Reason for Denial (Required)</label>
+                                                <textarea name="adminNotes" id="adminNotes" class="form-control" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">Deny</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/admin.css"/>

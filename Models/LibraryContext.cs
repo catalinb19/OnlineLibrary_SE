@@ -1,18 +1,39 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using OnlineLibrary.Models;
-using System.Reflection.Metadata;
 
 namespace OnlineLibrary.Models
 {
     public class LibraryContext : DbContext
     {
         public LibraryContext(DbContextOptions<LibraryContext> options)
-        : base(options)
+            : base(options)
+        {
+        }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Borrowing> Borrowings { get; set; }
+        public DbSet<BookRequest> BookRequests { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
 
-        { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Configure relationships and constraints here
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Reviews)
+                .WithOne(r => r.Book)
+                .HasForeignKey(r => r.BookId);
 
-        public DbSet<Book>? Books { get; set; }
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Borrowings)
+                .WithOne(b => b.Book)
+                .HasForeignKey(b => b.BookId);
+
+            modelBuilder.Entity<Borrowing>()
+                .HasMany(b => b.BookRequests)
+                .WithOne(r => r.Borrowing)
+                .HasForeignKey(r => r.BorrowingId);
+        }
 
     }
 }

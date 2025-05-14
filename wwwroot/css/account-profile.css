@@ -170,6 +170,19 @@
         margin-top: 10px;
     }
 
+.admin-notes {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+    .admin-notes strong {
+        font-weight: bold;
+    }
+
+
 @media (max-width: 768px) {
     .profile-header {
         flex-direction: column;
