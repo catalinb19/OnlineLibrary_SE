@@ -20,10 +20,11 @@ namespace OnlineLibrary
                 .AddEntityFrameworkStores<LibraryContext>();
             builder.Services.AddDbContext<LibraryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDbSE")));
 
+
             // Register services
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-       ;
+
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
