@@ -7,23 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineLibrary.Models;
+using OnlineLibrary.Services;
+using OnlineLibrary.Services.Interfaces;
 
 namespace OnlineLibrary.Controllers
 {
     [Authorize(Roles = "Administrator")]
     public class BooksController : Controller
     {
-        private readonly LibraryContext _context;
+        private readonly IBookService _bookService;
 
-        public BooksController(LibraryContext context)
+        public BooksController(IBookService bookService)
         {
-            _context = context;
+            _bookService = bookService;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books.ToListAsync());
+            return View(await _bookService.GetAllBooksAsync());
         }
 
         // GET: Books/Details/5
@@ -34,9 +36,7 @@ namespace OnlineLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .Include(b => b.Reviews)
-                .FirstOrDefaultAsync(m => m.BookId == id);
+            var book = await _bookService.GetBookWithReviewsAsync(id);
 
             if (book == null)
             {
@@ -71,8 +71,7 @@ namespace OnlineLibrary.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                await _bookService.AddBookAsync(book);
                 return RedirectToAction(nameof(Index));
             }
             return View(book);
@@ -86,12 +85,11 @@ namespace OnlineLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookService.GetBookForEditAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
-
 
             return View(book);
         }
@@ -110,12 +108,11 @@ namespace OnlineLibrary.Controllers
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    await _bookService.UpdateBookAsync(book);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.BookId))
+                    if (!_bookService.BookExists(book.BookId))
                     {
                         return NotFound();
                     }
@@ -137,8 +134,7 @@ namespace OnlineLibrary.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookId == id);
+            var book = await _bookService.GetBookForDeleteAsync(id);
             if (book == null)
             {
                 return NotFound();
@@ -152,19 +148,13 @@ namespace OnlineLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book != null)
-            {
-                _context.Books.Remove(book);
-            }
-
-            await _context.SaveChangesAsync();
+            await _bookService.DeleteBookAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookExists(int id)
         {
-            return _context.Books.Any(e => e.BookId == id);
+            return _bookService.BookExists(id);
         }
     }
 }
