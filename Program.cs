@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using OnlineLibrary.Models;
+using OnlineLibrary.Services.Interfaces;
+using OnlineLibrary.Services;
 
 namespace OnlineLibrary
 {
@@ -17,6 +19,12 @@ namespace OnlineLibrary
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<LibraryContext>();
             builder.Services.AddDbContext<LibraryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDbSE")));
+
+
+            // Register services
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
