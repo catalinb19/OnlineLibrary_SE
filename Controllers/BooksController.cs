@@ -36,7 +36,9 @@ namespace OnlineLibrary.Controllers
                 return NotFound();
             }
 
+
             var book = await _bookService.GetBookWithReviewsAsync(id);
+
 
             if (book == null)
             {
@@ -90,6 +92,7 @@ namespace OnlineLibrary.Controllers
             {
                 return NotFound();
             }
+
 
             return View(book);
         }
